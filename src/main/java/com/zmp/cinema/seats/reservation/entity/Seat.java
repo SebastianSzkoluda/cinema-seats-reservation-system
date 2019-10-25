@@ -1,11 +1,15 @@
 package com.zmp.cinema.seats.reservation.entity;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Builder
 @Entity
 @Table(name = "Seat")
@@ -22,8 +26,8 @@ public class Seat {
     @Column(name = "seatYPosition")
     private String seatYPosition;
 
-    @ManyToOne
-    @JoinColumn(name="cinemaHall_id", referencedColumnName = "id", nullable=false)
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name="cinemaHall_id", referencedColumnName = "id")
     private CinemaHall cinemaHall;
 
     @OneToOne

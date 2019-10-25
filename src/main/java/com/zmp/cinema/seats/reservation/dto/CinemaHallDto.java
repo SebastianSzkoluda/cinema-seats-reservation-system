@@ -1,17 +1,19 @@
 package com.zmp.cinema.seats.reservation.dto;
 
+import lombok.Builder;
 import lombok.Value;
 
 import java.util.List;
 
+@Builder
 @Value
 public class CinemaHallDto {
 
     Long id;
 
-    Integer cinemaHalNumber;
+    Integer cinemaHallNumber;
 
-    List<SeatDto> seatDtos;
+    String cinemaHallName;
 
-    CinemaDto cinema;
+    List<SeatDto> seats;
 }

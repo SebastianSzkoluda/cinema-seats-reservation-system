@@ -1,16 +1,18 @@
 package com.zmp.cinema.seats.reservation.dto;
 
 
+import lombok.Builder;
 import lombok.Value;
 
+@Builder
 @Value
 public class SeatDto {
 
     Long id;
 
-    Integer seatNumber;
+    String seatXPosition;
 
-    CinemaHallDto cinemaHall;
+    String seatYPosition;
 
-    UserDto user;
+    Boolean isTaken;
 }
