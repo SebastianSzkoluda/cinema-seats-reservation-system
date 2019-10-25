@@ -9,7 +9,9 @@ import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class CinemaHallServiceImpl implements CinemaHallService {
@@ -24,23 +26,20 @@ public class CinemaHallServiceImpl implements CinemaHallService {
     @Override
     public CinemaHall readCinemaHallFromFile(File file) throws IOException {
         CinemaHall cinemaHall = CinemaHall.builder().build();
-        List<Seat> seats = new ArrayList<>();
         Scanner scanner = new Scanner(file);
         cinemaHall.setCinemaHallName(scanner.nextLine());
-        while (scanner.hasNextLine()) {
-            String line = scanner.nextLine();
-            List<String> cinemaHallRow = Arrays.asList(line.split("\\|"));
-            for (String ch : cinemaHallRow) {
-                Seat.SeatBuilder builder = Seat.builder();
-                if (cinemaHallRow.indexOf(ch) != 0) {
-                    builder.seatYPosition(cinemaHallRow.get(0));
-                    builder.seatXPosition(ch);
-                    builder.cinemaHall(cinemaHall);
-                    Seat seat = builder.build();
-                    seats.add(seat);
-                }
-            }
-        }
+        List<Seat> seats = Files.lines(file.toPath())
+                .skip(1)
+                .map(s -> Arrays.stream(s.replaceAll("\\s+", "").split("\\|"))
+                        .skip(1)
+                        .map(s1 -> Seat.builder()
+                                .cinemaHall(cinemaHall)
+                                .seatXPosition(s1)
+                                .seatYPosition(s.substring(0, 1))
+                                .build())
+                        .collect(Collectors.toList())
+                ).flatMap(Collection::stream)
+                .collect(Collectors.toList());
         cinemaHall.setCinemaHallNumber(1);
         cinemaHall.setSeats(seats);
         return cinemaHall;
