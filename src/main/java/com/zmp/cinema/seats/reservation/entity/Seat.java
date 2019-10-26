@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.Optional;
 
 @Data
 @NoArgsConstructor
@@ -16,8 +17,8 @@ import javax.persistence.*;
 public class Seat {
 
     @Id
-    @Column(name="id")
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "seatXPosition")
@@ -26,15 +27,10 @@ public class Seat {
     @Column(name = "seatYPosition")
     private String seatYPosition;
 
+    @Column(name = "user")
+    private String user;// Sebastian SZkołuda
+
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name="cinemaHall_id", referencedColumnName = "id")
+    @JoinColumn(name = "cinemaHall_id", referencedColumnName = "id")
     private CinemaHall cinemaHall;
-
-    @OneToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
-    private User user;
-
-    public boolean isTaken() {
-        return user != null;
-    }
 }

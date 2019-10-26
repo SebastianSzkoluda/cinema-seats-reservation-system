@@ -7,7 +7,7 @@ import java.time.LocalDate;
 
 @Builder
 @Value
-public class SeanceDto {
+public class SeanceRequest {
 
     Long id;
 
@@ -17,5 +17,5 @@ public class SeanceDto {
 
     Integer filmDuration;
 
-    CinemaHallDto cinemaHall;
+    Long cinemaHallId;
 }

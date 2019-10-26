@@ -4,6 +4,8 @@ package com.zmp.cinema.seats.reservation.dto;
 import lombok.Builder;
 import lombok.Value;
 
+import java.util.Optional;
+
 @Builder
 @Value
 public class SeatDto {
@@ -14,5 +16,9 @@ public class SeatDto {
 
     String seatYPosition;
 
-    Boolean isTaken;
+    String user;
+
+    public Optional<String> getUser() {
+        return Optional.ofNullable(user);
+    }
 }

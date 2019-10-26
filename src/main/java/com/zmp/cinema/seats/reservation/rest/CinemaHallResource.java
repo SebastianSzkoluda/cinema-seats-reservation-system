@@ -6,6 +6,7 @@ import com.zmp.cinema.seats.reservation.entity.Seat;
 import com.zmp.cinema.seats.reservation.mapper.CinemaHallMapper;
 import com.zmp.cinema.seats.reservation.service.CinemaHallService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -13,7 +14,9 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
+import java.util.Collection;
 import java.util.Optional;
+import java.util.function.Function;
 
 @RestController
 @RequestMapping("/api/cinema-hall")
@@ -27,21 +30,21 @@ public class CinemaHallResource {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<CinemaHallDto> retrieveStudent(@PathVariable long id) {
-        Optional<CinemaHall> student = cinemaHallService.findById(id);
+    public ResponseEntity<CinemaHallDto> retrieveCinemaHall(@PathVariable Long id) {
+        Optional<CinemaHall> cinemaHall = cinemaHallService.findById(id);
 
-        if (!student.isPresent()) {
+        if (!cinemaHall.isPresent()) {
             throw new RuntimeException("id-" + id);
         }
 
-        return ResponseEntity.ok(student.map(CinemaHallMapper::mapCinemaHallToCinemaHallDto).get());
+        return ResponseEntity.ok(cinemaHall.map(CinemaHallMapper::mapCinemaHallToCinemaHallDto).get());
     }
 
     @PostMapping("/file")
     public ResponseEntity<CinemaHallDto> readCinemaHallFromFile(@RequestParam File file) throws IOException {
         CinemaHall cinemaHall = cinemaHallService.readCinemaHallFromFile(file);
         if (cinemaHallService.saveCinemaHall(cinemaHall)) {
-            URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
+            URI location = ServletUriComponentsBuilder.fromPath("/api/cinema-hall/{id}")
                     .buildAndExpand(cinemaHall.getId()).toUri();
 
             return ResponseEntity.created(location).build();
@@ -56,8 +59,8 @@ public class CinemaHallResource {
                 .map(cinemaHall -> ResponseEntity.ok(cinemaHall.getSeats().stream()
                         .filter(seat -> seat.getId().equals(id))
                         .findFirst()
-                        .map(Seat::isTaken)
-                        .orElseThrow(IllegalArgumentException::new)
+                        .map(Seat::getUser)
+                        .isPresent()
                 ))
                 .orElse(ResponseEntity.badRequest().build());
     }

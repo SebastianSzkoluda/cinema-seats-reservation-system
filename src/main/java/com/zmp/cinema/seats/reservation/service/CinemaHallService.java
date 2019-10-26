@@ -12,5 +12,5 @@ public interface CinemaHallService {
 
     boolean saveCinemaHall(CinemaHall cinemaHall);
 
-    Optional<CinemaHall> findById(long id);
+    Optional<CinemaHall> findById(Long id);
 }

@@ -51,7 +51,7 @@ public class CinemaHallServiceImpl implements CinemaHallService {
     }
 
     @Override
-    public Optional<CinemaHall> findById(long id) {
+    public Optional<CinemaHall> findById(Long id) {
         return cinemaHallRepository.findById(id);
     }
 }

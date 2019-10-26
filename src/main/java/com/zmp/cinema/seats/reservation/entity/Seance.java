@@ -27,6 +27,9 @@ public class Seance {
     @Column(name="showingTime")
     private LocalDate showingTime;
 
+    @Column(name="filmDuration")
+    private Integer filmDuration;
+
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "cinemaHall_id", referencedColumnName = "id", nullable = false)
     private CinemaHall cinemaHall;

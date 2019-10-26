@@ -7,5 +7,5 @@ import java.util.Optional;
 
 public interface CinemaHallRepository extends CrudRepository<CinemaHall, Long> {
 
-    Optional<CinemaHall> findById(long id);
+    Optional<CinemaHall> findById(Long id);
 }

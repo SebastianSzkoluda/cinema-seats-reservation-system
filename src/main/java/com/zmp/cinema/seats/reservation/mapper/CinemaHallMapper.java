@@ -15,4 +15,13 @@ public class CinemaHallMapper {
                 .seats(cinemaHall.getSeats().stream().map(SeatMapper::mapSeatToSeatDto).collect(Collectors.toList()))
                 .build();
     }
+
+    public static CinemaHall mapCinemaHallDtoToCinemaHall(CinemaHallDto cinemaHallDto) {
+        return CinemaHall.builder()
+                .id(cinemaHallDto.getId())
+                .cinemaHallName(cinemaHallDto.getCinemaHallName())
+                .cinemaHallNumber(cinemaHallDto.getCinemaHallNumber())
+                .seats(cinemaHallDto.getSeats().stream().map(SeatMapper::mapSeatDtoToSeat).collect(Collectors.toList()))
+                .build();
+    }
 }

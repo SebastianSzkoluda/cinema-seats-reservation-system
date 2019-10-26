@@ -10,7 +10,16 @@ public class SeatMapper {
                 .id(seat.getId())
                 .seatXPosition(seat.getSeatXPosition())
                 .seatYPosition(seat.getSeatYPosition())
-                .isTaken(seat.isTaken())
+                .user(seat.getUser())
+                .build();
+    }
+
+    public static Seat mapSeatDtoToSeat(SeatDto seatDto) {
+        return Seat.builder()
+                .id(seatDto.getId())
+                .seatXPosition(seatDto.getSeatXPosition())
+                .seatYPosition(seatDto.getSeatYPosition())
+                .user(seatDto.getUser().orElse(null))
                 .build();
     }
 }
