@@ -4,13 +4,13 @@ package com.zmp.cinema.seats.reservation.dto;
 import lombok.Builder;
 import lombok.Value;
 
+import java.util.List;
+
 @Builder
 @Value
-public class SeatDto {
+public class ReservedSeatsDto {
 
-    Long id;
+    CustomerDto customer;
 
-    String seatXPosition;
-
-    String seatYPosition;
+    List<SeatDto> seats;
 }

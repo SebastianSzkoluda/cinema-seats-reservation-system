@@ -6,7 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.Optional;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -27,10 +27,15 @@ public class Seat {
     @Column(name = "seatYPosition")
     private String seatYPosition;
 
-    @Column(name = "user")
-    private String user;// Sebastian SZkołuda
-
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "cinemaHall_id", referencedColumnName = "id")
     private CinemaHall cinemaHall;
+
+    @ManyToMany(cascade = {CascadeType.ALL})
+    @JoinTable(
+            name = "SeatReservations",
+            joinColumns = {@JoinColumn(name = "seat_id")},
+            inverseJoinColumns = {@JoinColumn(name = "reservation_id")}
+    )
+    private List<Reservation> reservation;
 }

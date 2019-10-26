@@ -2,10 +2,8 @@ package com.zmp.cinema.seats.reservation.mapper;
 
 import com.zmp.cinema.seats.reservation.dto.SeanceDto;
 import com.zmp.cinema.seats.reservation.dto.SeanceRequest;
-import com.zmp.cinema.seats.reservation.dto.SeatDto;
 import com.zmp.cinema.seats.reservation.entity.CinemaHall;
 import com.zmp.cinema.seats.reservation.entity.Seance;
-import com.zmp.cinema.seats.reservation.entity.Seat;
 
 public class SeanceMapper {
 
@@ -31,7 +29,6 @@ public class SeanceMapper {
 
     public static Seance mapSeanceRequestToSeance(SeanceRequest seanceRequest, CinemaHall cinemaHall) {
         return Seance.builder()
-                .id(seanceRequest.getId())
                 .cinemaHall(cinemaHall)
                 .filmName(seanceRequest.getFilmName())
                 .showingTime(seanceRequest.getShowingTime())

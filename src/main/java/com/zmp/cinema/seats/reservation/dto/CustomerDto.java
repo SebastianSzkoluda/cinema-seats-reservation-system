@@ -6,11 +6,11 @@ import lombok.Value;
 
 @Builder
 @Value
-public class SeatDto {
+public class CustomerDto {
 
     Long id;
 
-    String seatXPosition;
+    String firstName;
 
-    String seatYPosition;
+    String lastName;
 }

@@ -2,11 +2,9 @@ package com.zmp.cinema.seats.reservation.rest;
 
 import com.zmp.cinema.seats.reservation.dto.CinemaHallDto;
 import com.zmp.cinema.seats.reservation.entity.CinemaHall;
-import com.zmp.cinema.seats.reservation.entity.Seat;
 import com.zmp.cinema.seats.reservation.mapper.CinemaHallMapper;
 import com.zmp.cinema.seats.reservation.service.CinemaHallService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -14,9 +12,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
-import java.util.Collection;
 import java.util.Optional;
-import java.util.function.Function;
 
 @RestController
 @RequestMapping("/api/cinema-hall")
@@ -51,17 +47,5 @@ public class CinemaHallResource {
         } else {
             return ResponseEntity.noContent().build();
         }
-    }
-
-    @GetMapping("/isTaken/{hallId}/{id}")
-    public ResponseEntity<Boolean> isSeatTaken(@PathVariable Long hallId, @PathVariable Long id) {
-        return cinemaHallService.findById(hallId)
-                .map(cinemaHall -> ResponseEntity.ok(cinemaHall.getSeats().stream()
-                        .filter(seat -> seat.getId().equals(id))
-                        .findFirst()
-                        .map(Seat::getUser)
-                        .isPresent()
-                ))
-                .orElse(ResponseEntity.badRequest().build());
     }
 }

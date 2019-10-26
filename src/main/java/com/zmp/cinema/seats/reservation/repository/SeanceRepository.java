@@ -1,6 +1,5 @@
 package com.zmp.cinema.seats.reservation.repository;
 
-import com.zmp.cinema.seats.reservation.entity.CinemaHall;
 import com.zmp.cinema.seats.reservation.entity.Seance;
 import org.springframework.data.repository.CrudRepository;
 

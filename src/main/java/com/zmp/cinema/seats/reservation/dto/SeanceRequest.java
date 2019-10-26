@@ -3,17 +3,15 @@ package com.zmp.cinema.seats.reservation.dto;
 import lombok.Builder;
 import lombok.Value;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Builder
 @Value
 public class SeanceRequest {
 
-    Long id;
-
     String filmName;
 
-    LocalDate showingTime;
+    LocalDateTime showingTime;
 
     Integer filmDuration;
 

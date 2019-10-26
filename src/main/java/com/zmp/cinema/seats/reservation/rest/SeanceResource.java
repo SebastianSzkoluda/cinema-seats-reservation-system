@@ -1,8 +1,10 @@
 package com.zmp.cinema.seats.reservation.rest;
 
+import com.zmp.cinema.seats.reservation.dto.ReservedSeatsDto;
 import com.zmp.cinema.seats.reservation.dto.SeanceDto;
 import com.zmp.cinema.seats.reservation.dto.SeanceRequest;
 import com.zmp.cinema.seats.reservation.entity.Seance;
+import com.zmp.cinema.seats.reservation.mapper.ReservationMapper;
 import com.zmp.cinema.seats.reservation.mapper.SeanceMapper;
 import com.zmp.cinema.seats.reservation.service.CinemaHallService;
 import com.zmp.cinema.seats.reservation.service.SeanceService;
@@ -12,7 +14,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/seance/")
@@ -36,6 +40,15 @@ public class SeanceResource {
         }
 
         return ResponseEntity.ok(seance.map(SeanceMapper::mapSeanceToSeanceDto).get());
+    }
+
+    @GetMapping("seats/{id}")
+    public List<ReservedSeatsDto> getReservedSeatsForSeance(@PathVariable Long id) {
+        return seanceService.findById(id)
+                .map(seance -> seance.getReservations().stream()
+                        .map(ReservationMapper::mapReservationToReservedSeatsDto)
+                        .collect(Collectors.toList()))
+                .orElseThrow(IllegalArgumentException::new);
     }
 
     @PostMapping

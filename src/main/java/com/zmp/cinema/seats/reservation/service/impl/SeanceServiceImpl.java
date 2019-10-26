@@ -1,6 +1,5 @@
 package com.zmp.cinema.seats.reservation.service.impl;
 
-import com.zmp.cinema.seats.reservation.entity.CinemaHall;
 import com.zmp.cinema.seats.reservation.entity.Seance;
 import com.zmp.cinema.seats.reservation.repository.SeanceRepository;
 import com.zmp.cinema.seats.reservation.service.SeanceService;

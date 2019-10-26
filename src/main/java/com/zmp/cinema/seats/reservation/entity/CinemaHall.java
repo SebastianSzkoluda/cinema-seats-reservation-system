@@ -21,15 +21,15 @@ public class CinemaHall {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "cinemaHallNumber")
+    @Column(name = "cinemaHallNumber", columnDefinition = "integer auto_increment")
     private Integer cinemaHallNumber;
 
     @Column(name = "cinemaHallName")
     private String cinemaHallName;
 
-    @OneToOne(mappedBy = "cinemaHall")
-    private Seance seance;
+    @OneToMany(mappedBy = "cinemaHall", cascade = CascadeType.ALL)
+    private List<Seance> seances;
 
-    @OneToMany(mappedBy = "cinemaHall", cascade=CascadeType.ALL)
+    @OneToMany(mappedBy = "cinemaHall", cascade = CascadeType.ALL)
     private List<Seat> seats;
 }

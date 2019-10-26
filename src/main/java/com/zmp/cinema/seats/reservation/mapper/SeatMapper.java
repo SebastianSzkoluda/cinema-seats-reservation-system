@@ -10,7 +10,6 @@ public class SeatMapper {
                 .id(seat.getId())
                 .seatXPosition(seat.getSeatXPosition())
                 .seatYPosition(seat.getSeatYPosition())
-                .user(seat.getUser())
                 .build();
     }
 
@@ -19,7 +18,6 @@ public class SeatMapper {
                 .id(seatDto.getId())
                 .seatXPosition(seatDto.getSeatXPosition())
                 .seatYPosition(seatDto.getSeatYPosition())
-                .user(seatDto.getUser().orElse(null))
                 .build();
     }
 }

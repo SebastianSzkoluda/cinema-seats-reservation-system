@@ -40,7 +40,6 @@ public class CinemaHallServiceImpl implements CinemaHallService {
                         .collect(Collectors.toList())
                 ).flatMap(Collection::stream)
                 .collect(Collectors.toList());
-        cinemaHall.setCinemaHallNumber(1);
         cinemaHall.setSeats(seats);
         return cinemaHall;
     }

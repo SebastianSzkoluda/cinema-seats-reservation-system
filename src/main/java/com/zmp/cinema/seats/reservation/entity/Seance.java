@@ -6,7 +6,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -17,20 +18,26 @@ import java.time.LocalDate;
 public class Seance {
 
     @Id
-    @Column(name="id")
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name="filmName")
+    @Column(name = "filmName")
     private String filmName;
 
-    @Column(name="showingTime")
-    private LocalDate showingTime;
+    //2019-10-28T16:00:49.455 - format
+    @Column(name = "showingTime")
+    private LocalDateTime showingTime;
 
-    @Column(name="filmDuration")
+    //in minutes
+    @Column(name = "filmDuration")
     private Integer filmDuration;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "cinemaHall_id", referencedColumnName = "id", nullable = false)
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "cinemaHall_id", referencedColumnName = "id")
     private CinemaHall cinemaHall;
+
+    @OneToMany(mappedBy = "seance", cascade = CascadeType.ALL)
+    private List<Reservation> reservations;
+
 }
