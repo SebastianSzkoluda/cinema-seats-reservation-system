@@ -31,7 +31,7 @@ export class CinemaHallService {
   }
 
   updateCinemaHallWithURI(location: string) {
-    this.http.get<CinemaHall>(location).subscribe(data => this._cinemaHall.next(data));
+    this.retrieveCinemaHall(location).subscribe(data => this._cinemaHall.next(data));
   }
 
   retrieveLatestCinemaHall(): Observable<CinemaHall[]> {
@@ -39,7 +39,7 @@ export class CinemaHallService {
   }
 
   updateLatestCinemaHall() {
-    return this.http.get<CinemaHall[]>(this.baseUrl + 'latest').subscribe(data => this._cinemaHall.next(data[0]));
+    this.retrieveLatestCinemaHall().subscribe(data => this._cinemaHall.next(data[0]));
   }
 
   getAllCinemaHalls(): Observable<CinemaHall[]> {

@@ -45,9 +45,15 @@ export class SeanceService {
     });
   }
 
+  getAllSeancesByFilmName(): Observable<Map<string, SeanceDto[]>> {
+    return this.http.get<Map<string, SeanceDto[]>>(this.baseUrl);
+  }
+
   updateAllSeancesByFilmName() {
-    this.http.get<Map<string, SeanceDto[]>>(this.baseUrl).subscribe(data => {
-      this._seances.next(data);
-    }, error => console.log('Could not load seances.'));
+    this.getAllSeancesByFilmName().subscribe(data => this._seances.next(data));
+  }
+
+  updateAllSeances(seances) {
+    this._seances.next(seances);
   }
 }

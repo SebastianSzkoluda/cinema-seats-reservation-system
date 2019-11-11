@@ -2,7 +2,6 @@
   <app-cinema-hall-creator></app-cinema-hall-creator>
   <mat-card *ngIf="actualCinemaHall != null">
     <h3>Actual cinema hall</h3>
-    <h4>Cinema hall name: {{actualCinemaHall.cinemaHallName}}</h4>
       <app-cinema-hall-table [reservedSeats]="[]" [isForReservationView]="false"></app-cinema-hall-table>
   </mat-card>
 </div>

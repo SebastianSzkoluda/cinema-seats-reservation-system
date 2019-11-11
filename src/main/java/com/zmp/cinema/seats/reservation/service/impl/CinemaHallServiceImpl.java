@@ -30,25 +30,28 @@ public class CinemaHallServiceImpl implements CinemaHallService {
     }
 
     @Override
-    public CinemaHall readCinemaHallFromFile(InputStream resource) throws IOException {
-        CinemaHall cinemaHall = CinemaHall.builder().build();
+    public Optional<CinemaHall> readCinemaHallFromFile(InputStream resource) throws IOException {
         List<String> lines = IOUtils.readLines(resource, StandardCharsets.UTF_8);
-        cinemaHall.setCinemaHallName(lines.get(0));
-        cinemaHall.setCreatedAt(Instant.now());
-        List<Seat> seats = lines.stream()
-                .skip(1)
-                .map(s -> Arrays.stream(s.replaceAll("\\s+", "").split("\\|"))
-                        .skip(1)
-                        .map(s1 -> Seat.builder()
-                                .cinemaHall(cinemaHall)
-                                .seatXPosition(s1)
-                                .seatYPosition(s.substring(0, 1))
-                                .build())
-                        .collect(Collectors.toList())
-                ).flatMap(Collection::stream)
-                .collect(Collectors.toList());
-        cinemaHall.setSeats(seats);
-        return cinemaHall;
+        if(cinemaHallRepository.findByCinemaHallName(lines.get(0)).isEmpty()) {
+            CinemaHall cinemaHall = CinemaHall.builder().build();
+            cinemaHall.setCinemaHallName(lines.get(0));
+            cinemaHall.setCreatedAt(Instant.now());
+            List<Seat> seats = lines.stream()
+                    .skip(1)
+                    .map(s -> Arrays.stream(s.replaceAll("\\s+", "").split("\\|"))
+                            .skip(1)
+                            .map(s1 -> Seat.builder()
+                                    .cinemaHall(cinemaHall)
+                                    .seatXPosition(s1)
+                                    .seatYPosition(s.substring(0, 1))
+                                    .build())
+                            .collect(Collectors.toList())
+                    ).flatMap(Collection::stream)
+                    .collect(Collectors.toList());
+            cinemaHall.setSeats(seats);
+            return Optional.of(cinemaHall);
+        }
+        return Optional.empty();
     }
 
     @Override

@@ -10,6 +10,7 @@ import {Reservation} from '../../_model/reservation';
 import {ReservationService} from '../reservation-manager/reservation.service';
 import {CinemaHallService} from '../../cinema-hall/cinema-hall-manager/cinema-hall.service';
 import {SnackbarService} from '../../snackbar/snackbar-service';
+import {ReservationOnSeats} from '../../_model/reservation-on-seats';
 
 @Component({
   selector: 'app-reservation-panel',
@@ -24,6 +25,8 @@ export class ReservationPanelComponent implements OnInit {
   reservationForm: FormGroup;
   seatsForReservation = [];
   reservedSeats: Seat[] = [];
+  reservationsOnSeats: ReservationOnSeats[] = [];
+  displayedColumns: string[] = ['id', 'firstName', 'lastName', 'seats'];
 
   constructor(private formBuilder: FormBuilder,
               private route: ActivatedRoute,
@@ -46,6 +49,7 @@ export class ReservationPanelComponent implements OnInit {
         this.seance = data;
         this.cinemaHallService.updateCinemaHall(this.seance.cinemaHall);
       });
+      this.getAllReservationsOnSeance(id);
       this.getReservedSeats(id);
     });
   }
@@ -56,8 +60,13 @@ export class ReservationPanelComponent implements OnInit {
     this.reservation.seanceId = this.seance.id;
     this.reservation.seatIds = this.filterSeatsForReservation();
     this.reservationService.addNewReservation(this.reservation).subscribe();
-    setTimeout(() => this.seanceService.updateReservedSeatsForSeance(this.seance.id), 1500);
+    setTimeout(() => {
+      this.seanceService.updateReservedSeatsForSeance(this.seance.id);
+      this.getAllReservationsOnSeance(this.seance.id);
+      }, 1500
+    );
     this.snackbarService.openSnackBar('Reservation added successfully', 'success');
+    this.resetForm();
   }
 
   getReservedSeats(id) {
@@ -72,6 +81,21 @@ export class ReservationPanelComponent implements OnInit {
   filterSeatsForReservation() {
     const numbers = this.reservedSeats.map(data => data.id);
     return this.seatsForReservation.filter(item => numbers.indexOf(item) < 0);
+  }
+
+  getAllReservationsOnSeance(id) {
+    this.reservationService.getAllReservationsOnSeance(+id).subscribe(data => this.reservationsOnSeats = data);
+  }
+
+  convertListOfSeatsToString(seats: Array<Seat>) {
+    return seats.map(x => x.seatYPosition + x.seatXPosition).join(', ');
+  }
+
+  resetForm() {
+    this.reservationForm.reset();
+    Object.keys(this.reservationForm.controls).forEach(key => {
+      this.reservationForm.get(key).setErrors(null);
+    });
   }
 
 }

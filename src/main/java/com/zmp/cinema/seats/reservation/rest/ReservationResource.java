@@ -2,6 +2,7 @@ package com.zmp.cinema.seats.reservation.rest;
 
 import com.zmp.cinema.seats.reservation.dto.ReservationDto;
 import com.zmp.cinema.seats.reservation.dto.ReservationRequest;
+import com.zmp.cinema.seats.reservation.dto.ReservationWithSeatsDto;
 import com.zmp.cinema.seats.reservation.entity.Reservation;
 import com.zmp.cinema.seats.reservation.entity.Seance;
 import com.zmp.cinema.seats.reservation.entity.Seat;
@@ -12,10 +13,7 @@ import com.zmp.cinema.seats.reservation.service.SeatService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Set;
@@ -60,5 +58,13 @@ public class ReservationResource {
             return ResponseEntity.ok(ReservationMapper.mapReservationToReservationDto(reservation));
         }
         return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @GetMapping("/seance/{id}")
+    public List<ReservationWithSeatsDto> getAllReservationsOnSeance(@PathVariable Long id) {
+        return seanceService.findById(id).map(s -> s.getReservations().stream()
+                .map(ReservationMapper::mapReservationToReservationWithSeatsDto)
+                .collect(Collectors.toList()))
+                .orElseThrow(IllegalArgumentException::new);
     }
 }

@@ -5,6 +5,7 @@ import {SeanceDto} from '../../_model/seance-dto';
 import {SeanceService} from '../seance-manager/seance.service';
 import * as moment from 'moment';
 import {Router} from '@angular/router';
+import * as _ from 'lodash';
 
 @Component({
   selector: 'app-seance-panel',
@@ -21,10 +22,11 @@ export class SeancePanelComponent implements OnInit {
   ngOnInit() {
     this.cinemaHallService.getAllCinemaHalls().subscribe(value => {
       this.cinemaHalls = value;
-      console.log(this.cinemaHalls);
     });
     this.seanceService.updateAllSeancesByFilmName();
-    this.seanceService.seances.subscribe(data => this.seances = data);
+    this.seanceService.seances.subscribe(data => {
+      this.seances = data;
+    });
   }
 
   formatTimestamp(timestamp) {
@@ -33,5 +35,9 @@ export class SeancePanelComponent implements OnInit {
 
   openReservationView(seance: SeanceDto) {
     this.router.navigate(['/reservation/', seance.id]);
+  }
+
+  isEmpty(object) {
+    return _.isEmpty(object);
   }
 }

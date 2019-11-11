@@ -10,7 +10,7 @@
   </mat-card>
   <mat-card>
     <h3 style="text-align: left">Seances list</h3>
-    <div class="alert alert-warning" *ngIf="seances.size === 0">
+    <div class="alert alert-warning" *ngIf="isEmpty(seances)">
       <i class="material-icons">info</i>
       No data!
     </div>
@@ -20,7 +20,9 @@
       <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="10px">
         <button *ngFor="let seance of entry.value" mat-raised-button color="primary" type="button"
                 (click)="openReservationView(seance)">
-          {{formatTimestamp(seance.showingTime)}}
+          {{formatTimestamp(seance.showingTime)}}<br>
+          {{seance.filmDuration}} min.<br>
+          {{seance.cinemaHall.cinemaHallName}}
         </button>
       </div>
     </div>

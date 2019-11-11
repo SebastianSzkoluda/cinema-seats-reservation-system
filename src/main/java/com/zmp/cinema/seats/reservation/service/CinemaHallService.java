@@ -9,7 +9,7 @@ import java.util.Optional;
 
 public interface CinemaHallService {
 
-    CinemaHall readCinemaHallFromFile(InputStream resource) throws IOException;
+    Optional<CinemaHall> readCinemaHallFromFile(InputStream resource) throws IOException;
 
     boolean saveCinemaHall(CinemaHall cinemaHall);
 

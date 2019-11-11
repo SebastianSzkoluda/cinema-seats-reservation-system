@@ -1,6 +1,7 @@
 package com.zmp.cinema.seats.reservation.mapper;
 
 import com.zmp.cinema.seats.reservation.dto.ReservationDto;
+import com.zmp.cinema.seats.reservation.dto.ReservationWithSeatsDto;
 import com.zmp.cinema.seats.reservation.entity.Reservation;
 
 import java.util.stream.Collectors;
@@ -24,6 +25,15 @@ public class ReservationMapper {
                 .lastName(reservationDto.getLastName())
                 .seance(SeanceMapper.mapSeanceDtoToSeance(reservationDto.getSeance()))
                 .seats(reservationDto.getSeats().stream().map(SeatMapper::mapSeatDtoToSeat).collect(Collectors.toList()))
+                .build();
+    }
+
+    public static ReservationWithSeatsDto mapReservationToReservationWithSeatsDto(Reservation reservation) {
+        return ReservationWithSeatsDto.builder()
+                .id(reservation.getId())
+                .firstName(reservation.getFirstName())
+                .lastName(reservation.getLastName())
+                .seats(reservation.getSeats().stream().map(SeatMapper::mapSeatToSeatDto).collect(Collectors.toList()))
                 .build();
     }
 }

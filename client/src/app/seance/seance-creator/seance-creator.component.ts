@@ -41,8 +41,10 @@ export class SeanceCreatorComponent implements OnInit {
     this.seanceService.createSeance(this.seanceDto).subscribe(() => {
       this.seanceService.updateAllSeancesByFilmName();
       this.snackbarService.openSnackBar('Seance added successfully', 'success');
+      this.resetForm();
+    }, error => {
+      this.snackbarService.openSnackBar('Failed to add seance, maybe it already exists', 'fail');
     });
-    this.resetForm();
   }
 
   resetForm() {
@@ -51,5 +53,4 @@ export class SeanceCreatorComponent implements OnInit {
       this.seanceForm.get(key).setErrors(null);
     });
   }
-
 }

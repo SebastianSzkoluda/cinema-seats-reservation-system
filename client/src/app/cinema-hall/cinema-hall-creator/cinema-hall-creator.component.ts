@@ -41,9 +41,11 @@ export class CinemaHallCreatorComponent implements OnInit {
         this.cinemaHallService.updateCinemaHallWithURI(location);
         this.snackbarService.openSnackBar('Cinema hall added successfully', 'success');
       },
-      (err) => console.log(err)
+      (err) => {
+        console.log(err);
+        this.snackbarService.openSnackBar('Failed to load cinema hall', 'fail');
+      }
     );
-    this.uploadForm.reset();
   }
 
 }

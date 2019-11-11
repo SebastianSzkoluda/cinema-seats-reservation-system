@@ -6,6 +6,7 @@ import com.zmp.cinema.seats.reservation.entity.CinemaHall;
 import com.zmp.cinema.seats.reservation.mapper.CinemaHallMapper;
 import com.zmp.cinema.seats.reservation.service.CinemaHallService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -60,13 +61,14 @@ public class CinemaHallResource {
 
     @PostMapping("/file")
     public ResponseEntity<CinemaHallDto> readCinemaHallFromFile(@RequestParam MultipartFile file) throws IOException {
-        CinemaHall cinemaHall = cinemaHallService.readCinemaHallFromFile(file.getInputStream());
-        if (cinemaHallService.saveCinemaHall(cinemaHall)) {
+        Optional<CinemaHall> cinemaHall = cinemaHallService.readCinemaHallFromFile(file.getInputStream());
+        if (cinemaHall.isPresent()) {
+            cinemaHallService.saveCinemaHall(cinemaHall.get());
             URI location = ServletUriComponentsBuilder.fromPath("/api/cinema-hall/{id}")
-                    .buildAndExpand(cinemaHall.getId()).toUri();
+                    .buildAndExpand(cinemaHall.get().getId()).toUri();
             return ResponseEntity.created(location).build();
         } else {
-            return ResponseEntity.noContent().build();
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
 }

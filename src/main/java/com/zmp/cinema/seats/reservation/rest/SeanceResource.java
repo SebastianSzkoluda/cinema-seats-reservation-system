@@ -10,6 +10,7 @@ import com.zmp.cinema.seats.reservation.mapper.SeatMapper;
 import com.zmp.cinema.seats.reservation.service.CinemaHallService;
 import com.zmp.cinema.seats.reservation.service.SeanceService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -55,17 +56,14 @@ public class SeanceResource {
 
     @PostMapping
     public ResponseEntity<SeanceDto> addSeance(@RequestBody SeanceRequest seanceRequest) {
-        Seance seance = cinemaHallService.loadCinemaHall(seanceRequest.getCinemaHallId())
-                .map(cinemaHall -> SeanceMapper.mapSeanceRequestToSeance(seanceRequest, cinemaHall))
-                .orElseThrow(IllegalArgumentException::new);
-
-        if (seanceService.saveSeance(seance)) {
+        Optional<Seance> seance = seanceService.loadSeance(seanceRequest);
+        if (seance.isPresent()) {
+            seanceService.saveSeance(seance.get());
             URI location = ServletUriComponentsBuilder.fromPath("/api/seance/{id}")
-                    .buildAndExpand(seance.getId()).toUri();
-
+                    .buildAndExpand(seance.get().getId()).toUri();
             return ResponseEntity.created(location).build();
         } else {
-            return ResponseEntity.noContent().build();
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
 
