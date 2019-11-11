@@ -1,0 +1,18 @@
+<div class="cinema-hall">
+  <h4 class="screen">SCREEN</h4>
+  <div class="actual-cinema-hall">
+    <table class="table">
+      <tbody>
+      <tr *ngFor="let entry of cinemaHall.seats | keyvalue">
+        <td>{{entry.key}}</td>
+        <td *ngFor="let seat of entry.value" [ngClass]="isReserved(seat)"
+            (click)="isForReservationView && addSeatToReservation(seat, $event.target)"></td>
+      </tr>
+      </tbody>
+      <tr>
+        <td></td>
+        <td *ngFor="let entry of cinemaHall.seats['A']">{{entry.seatXPosition}}</td>
+      </tr>
+    </table>
+  </div>
+</div>

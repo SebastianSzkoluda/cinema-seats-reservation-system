@@ -21,13 +21,15 @@ public class Reservation {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "firstName")
+    String firstName;
+
+    @Column(name = "lastName")
+    String lastName;
+
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "seance_id", referencedColumnName = "id")
     private Seance seance;
-
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "customer_id", referencedColumnName = "id")
-    private Customer customer;
 
     @ManyToMany(mappedBy = "reservation")
     private List<Seat> seats;

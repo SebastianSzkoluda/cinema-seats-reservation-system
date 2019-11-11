@@ -1,0 +1,36 @@
+<div class="seance-creator" fxLayout="column" fxLayoutGap="15px" fxLayoutGap.xs="0px">
+  <form class="seance-creator-form" [formGroup]="seanceForm" (ngSubmit)="onSubmit()" novalidate>
+
+    <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="15px">
+
+      <mat-form-field class="example-full-width">
+        <input matInput placeholder="Film name" formControlName="filmName">
+      </mat-form-field>
+
+      <mat-form-field>
+        <input matInput type="datetime-local" placeholder="Showing time" formControlName="showingTime">
+      </mat-form-field>
+
+    </div>
+
+    <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="15px">
+
+      <mat-form-field class="example-full-width">
+        <input matInput placeholder="Film duration(in minutes)" formControlName="filmDuration">
+      </mat-form-field>
+
+      <mat-form-field class="example-full-width">
+        <mat-label>Cinema hall for seance</mat-label>
+        <mat-select [(value)]="selected" formControlName="cinemaHallId">
+          <mat-option *ngFor="let cinemaHall of cinemaHalls" [value]="cinemaHall.id">
+            {{cinemaHall.cinemaHallName}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+    </div>
+    <div class="seance-creator-action">
+      <button mat-raised-button color="primary" type="submit">Add</button>
+    </div>
+  </form>
+</div>

@@ -12,7 +12,9 @@ public class ReservationRequest {
 
     Long seanceId;
 
-    CustomerDto customer;
+    String firstName;
+
+    String lastName;
 
     Set<Long> seatIds;
 }

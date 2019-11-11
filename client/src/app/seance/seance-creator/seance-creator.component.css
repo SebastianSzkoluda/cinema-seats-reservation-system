@@ -1,0 +1,14 @@
+.seance-creator {
+}
+
+.seance-creator-form {
+  width: 100%;
+  margin: 0;
+}
+
+.seance-creator-action {
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+  padding: 0;
+}

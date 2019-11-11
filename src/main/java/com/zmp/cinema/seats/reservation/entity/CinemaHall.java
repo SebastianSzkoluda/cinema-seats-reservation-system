@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.Instant;
 import java.util.List;
 
 @Data
@@ -26,6 +27,9 @@ public class CinemaHall {
 
     @Column(name = "cinemaHallName")
     private String cinemaHallName;
+
+    @Column(name = "createdAt")
+    private Instant createdAt;
 
     @OneToMany(mappedBy = "cinemaHall", cascade = CascadeType.ALL)
     private List<Seance> seances;

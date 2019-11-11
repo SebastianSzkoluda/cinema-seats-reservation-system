@@ -1,11 +1,12 @@
 package com.zmp.cinema.seats.reservation.rest;
 
-import com.zmp.cinema.seats.reservation.dto.ReservedSeatsDto;
 import com.zmp.cinema.seats.reservation.dto.SeanceDto;
 import com.zmp.cinema.seats.reservation.dto.SeanceRequest;
+import com.zmp.cinema.seats.reservation.dto.SeatDto;
+import com.zmp.cinema.seats.reservation.entity.Reservation;
 import com.zmp.cinema.seats.reservation.entity.Seance;
-import com.zmp.cinema.seats.reservation.mapper.ReservationMapper;
 import com.zmp.cinema.seats.reservation.mapper.SeanceMapper;
+import com.zmp.cinema.seats.reservation.mapper.SeatMapper;
 import com.zmp.cinema.seats.reservation.service.CinemaHallService;
 import com.zmp.cinema.seats.reservation.service.SeanceService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,12 +15,11 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/api/seance/")
+@RequestMapping("/api/seance")
 public class SeanceResource {
 
     private final CinemaHallService cinemaHallService;
@@ -42,18 +42,20 @@ public class SeanceResource {
         return ResponseEntity.ok(seance.map(SeanceMapper::mapSeanceToSeanceDto).get());
     }
 
-    @GetMapping("seats/{id}")
-    public List<ReservedSeatsDto> getReservedSeatsForSeance(@PathVariable Long id) {
+    @GetMapping("/{id}/seats")
+    public List<SeatDto> getReservedSeatsForSeance(@PathVariable Long id) {
         return seanceService.findById(id)
                 .map(seance -> seance.getReservations().stream()
-                        .map(ReservationMapper::mapReservationToReservedSeatsDto)
+                        .map(Reservation::getSeats)
+                        .flatMap(Collection::stream)
+                        .map(SeatMapper::mapSeatToSeatDto)
                         .collect(Collectors.toList()))
                 .orElseThrow(IllegalArgumentException::new);
     }
 
     @PostMapping
     public ResponseEntity<SeanceDto> addSeance(@RequestBody SeanceRequest seanceRequest) {
-        Seance seance = cinemaHallService.findById(seanceRequest.getCinemaHallId())
+        Seance seance = cinemaHallService.loadCinemaHall(seanceRequest.getCinemaHallId())
                 .map(cinemaHall -> SeanceMapper.mapSeanceRequestToSeance(seanceRequest, cinemaHall))
                 .orElseThrow(IllegalArgumentException::new);
 
@@ -67,4 +69,13 @@ public class SeanceResource {
         }
     }
 
+    @GetMapping
+    public Map<String, List<SeanceDto>> getAllSeancesByFilmName() {
+        return seanceService.loadAllSeances().stream()
+                .map(SeanceMapper::mapSeanceToSeanceDto)
+                .collect(Collectors.groupingBy(SeanceDto::getFilmName,
+                        Collectors.collectingAndThen(Collectors.toList(),
+                                (l -> l.stream().sorted(Comparator.comparing(SeanceDto::getShowingTime))
+                                        .collect(Collectors.toList())))));
+    }
 }

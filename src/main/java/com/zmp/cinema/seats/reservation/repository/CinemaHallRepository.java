@@ -7,5 +7,7 @@ import java.util.Optional;
 
 public interface CinemaHallRepository extends CrudRepository<CinemaHall, Long> {
 
+    Optional<CinemaHall> findFirstByOrderByCreatedAtDesc();
+
     Optional<CinemaHall> findById(Long id);
 }

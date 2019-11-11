@@ -1,0 +1,29 @@
+<div fxLayout="column" fxLayoutGap="32px">
+  <mat-card>
+    <h3 style="text-align: left">Add new seance</h3>
+    <app-seance-creator *ngIf="cinemaHalls.length !== 0" [cinemaHalls]="cinemaHalls"></app-seance-creator>
+    <div class="alert alert-warning" *ngIf="cinemaHalls.length === 0">
+      <i class="material-icons">info</i>
+      To add seance there must be a cinema hall!
+    </div>
+
+  </mat-card>
+  <mat-card>
+    <h3 style="text-align: left">Seances list</h3>
+    <div class="alert alert-warning" *ngIf="seances.size === 0">
+      <i class="material-icons">info</i>
+      No data!
+    </div>
+
+    <div *ngFor="let entry of seances | keyvalue" fxLayout="column" fxLayoutGap="32px">
+      <h4>{{entry.key}}</h4>
+      <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="10px">
+        <button *ngFor="let seance of entry.value" mat-raised-button color="primary" type="button"
+                (click)="openReservationView(seance)">
+          {{formatTimestamp(seance.showingTime)}}
+        </button>
+      </div>
+    </div>
+
+  </mat-card>
+</div>

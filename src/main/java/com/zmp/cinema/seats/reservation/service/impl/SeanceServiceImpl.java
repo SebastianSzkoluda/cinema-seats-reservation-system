@@ -1,11 +1,13 @@
 package com.zmp.cinema.seats.reservation.service.impl;
 
+import com.google.common.collect.ImmutableList;
 import com.zmp.cinema.seats.reservation.entity.Seance;
 import com.zmp.cinema.seats.reservation.repository.SeanceRepository;
 import com.zmp.cinema.seats.reservation.service.SeanceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -26,5 +28,10 @@ public class SeanceServiceImpl implements SeanceService {
     @Override
     public Optional<Seance> findById(Long id) {
         return seanceRepository.findById(id);
+    }
+
+    @Override
+    public List<Seance> loadAllSeances() {
+        return ImmutableList.copyOf(seanceRepository.findAll());
     }
 }

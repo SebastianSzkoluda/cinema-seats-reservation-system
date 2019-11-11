@@ -1,0 +1,29 @@
+<mat-card>
+  <h3 style="text-align: left">Reserve seats</h3>
+  <app-cinema-hall-table [isForReservationView]="true"
+                         (emitter)='setSeatsForReservation($event)'></app-cinema-hall-table>
+</mat-card>
+
+<mat-card>
+  <div class="reservation" fxLayout="column" fxLayoutGap="15px" fxLayoutGap.xs="0px">
+    <form class="reservation-form" [formGroup]="reservationForm" (ngSubmit)="onSubmit()" novalidate>
+
+      <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="15px">
+
+        <mat-form-field class="example-full-width">
+          <input matInput placeholder="First name" formControlName="firstName">
+        </mat-form-field>
+
+        <mat-form-field class="example-full-width">
+          <input matInput placeholder="Last name" formControlName="lastName">
+        </mat-form-field>
+
+      </div>
+      <div class="reservation-action">
+        <button mat-raised-button color="primary" type="submit">Reserve</button>
+      </div>
+    </form>
+  </div>
+</mat-card>
+
+

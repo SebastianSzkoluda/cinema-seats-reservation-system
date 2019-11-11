@@ -14,7 +14,9 @@ public class ReservationDto {
 
     SeanceDto seance;
 
-    CustomerDto customer;
+    String firstName;
+
+    String lastName;
 
     List<SeatDto> seats;
 }

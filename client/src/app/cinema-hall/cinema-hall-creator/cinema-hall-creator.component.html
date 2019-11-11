@@ -1,0 +1,17 @@
+<mat-card class="creator" fxLayout="column" fxLayoutGap="15px" fxLayoutGap.xs="0px">
+  <h3>Please read cinema hall from file</h3>
+  <div>
+    <form [formGroup]="uploadForm" (ngSubmit)="onSubmit()">
+      <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="15px">
+        <mat-form-field>
+          <ngx-mat-file-input formControlName="name" placeholder="Basic Input"
+                              (change)="onFileSelect($event)"></ngx-mat-file-input>
+          <mat-icon matSuffix>folder</mat-icon>
+        </mat-form-field>
+      </div>
+      <div>
+        <button mat-raised-button color="primary" type="submit">Read</button>
+      </div>
+    </form>
+  </div>
+</mat-card>

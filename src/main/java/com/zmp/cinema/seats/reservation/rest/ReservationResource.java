@@ -1,15 +1,11 @@
 package com.zmp.cinema.seats.reservation.rest;
 
-import com.zmp.cinema.seats.reservation.dto.CustomerDto;
 import com.zmp.cinema.seats.reservation.dto.ReservationDto;
 import com.zmp.cinema.seats.reservation.dto.ReservationRequest;
-import com.zmp.cinema.seats.reservation.entity.Customer;
 import com.zmp.cinema.seats.reservation.entity.Reservation;
 import com.zmp.cinema.seats.reservation.entity.Seance;
 import com.zmp.cinema.seats.reservation.entity.Seat;
-import com.zmp.cinema.seats.reservation.mapper.CustomerMapper;
 import com.zmp.cinema.seats.reservation.mapper.ReservationMapper;
-import com.zmp.cinema.seats.reservation.service.CustomerService;
 import com.zmp.cinema.seats.reservation.service.ReservationService;
 import com.zmp.cinema.seats.reservation.service.SeanceService;
 import com.zmp.cinema.seats.reservation.service.SeatService;
@@ -32,25 +28,21 @@ public class ReservationResource {
 
     private final ReservationService reservationService;
     private final SeanceService seanceService;
-    private final CustomerService customerService;
     private final SeatService seatService;
 
     @Autowired
-    public ReservationResource(ReservationService reservationService, SeanceService seanceService, CustomerService customerService, SeatService seatService) {
+    public ReservationResource(ReservationService reservationService, SeanceService seanceService, SeatService seatService) {
         this.reservationService = reservationService;
         this.seanceService = seanceService;
-        this.customerService = customerService;
         this.seatService = seatService;
     }
 
     @PostMapping
     public ResponseEntity<ReservationDto> addNewReservation(@RequestBody ReservationRequest reservationRequest) {
-        CustomerDto customerDto = reservationRequest.getCustomer();
         Long seanceId = reservationRequest.getSeanceId();
         Set<Long> seatIds = reservationRequest.getSeatIds();
 
         Seance seance = seanceService.findById(seanceId).orElseThrow(IllegalArgumentException::new);
-        Customer customer = CustomerMapper.mapCustomerDtoToCustomer(customerDto);
         List<Seat> seats = seatService.findByIdIn(seatIds);
 
         Reservation reservation = Reservation.builder().build();
@@ -60,7 +52,8 @@ public class ReservationResource {
                     .collect(Collectors.toList());
             seat.setReservation(reservations);
         }
-        reservation.setCustomer(customer);
+        reservation.setFirstName(reservationRequest.getFirstName());
+        reservation.setLastName(reservationRequest.getLastName());
         reservation.setSeance(seance);
         reservation.setSeats(seats);
         if (reservationService.saveReservation(reservation)) {

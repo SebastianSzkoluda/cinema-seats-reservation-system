@@ -2,15 +2,20 @@ package com.zmp.cinema.seats.reservation.service;
 
 import com.zmp.cinema.seats.reservation.entity.CinemaHall;
 
-import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.util.List;
 import java.util.Optional;
 
 public interface CinemaHallService {
 
-    CinemaHall readCinemaHallFromFile(File file) throws IOException;
+    CinemaHall readCinemaHallFromFile(InputStream resource) throws IOException;
 
     boolean saveCinemaHall(CinemaHall cinemaHall);
 
-    Optional<CinemaHall> findById(Long id);
+    Optional<CinemaHall> loadCinemaHall(Long id);
+
+    List<CinemaHall> loadCinemaHalls();
+
+    Optional<CinemaHall> loadLatestReadCinemaHall();
 }
