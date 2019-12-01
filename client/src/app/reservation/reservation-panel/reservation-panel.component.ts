@@ -84,7 +84,8 @@ export class ReservationPanelComponent implements OnInit {
   }
 
   getAllReservationsOnSeance(id) {
-    this.reservationService.getAllReservationsOnSeance(+id).subscribe(data => this.reservationsOnSeats = data);
+    this.reservationService.getAllReservationsOnSeance(+id)
+      .subscribe(data => this.reservationsOnSeats = data);
   }
 
   convertListOfSeatsToString(seats: Array<Seat>) {

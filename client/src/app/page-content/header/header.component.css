@@ -11,7 +11,8 @@ div {
 }
 
 .mat-sidenav-container{
-  min-height: 93vh !important;
+  min-height: 84vh !important;
+  background-color: #e9e9e9;
 }
 
 a{
